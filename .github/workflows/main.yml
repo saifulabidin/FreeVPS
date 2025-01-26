@@ -1,29 +1,24 @@
-name: Ubuntu ssh Virtual Machine
+name: MacOS Virtual Machine
 on: 
   workflow_dispatch:
 defaults:
   run:
     shell: bash
-    
-    
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: MacOS Build
+    runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3.5.2
-#    - name: If failed, means ok
-#      run: ./not-exist-file.sh it bloke build
-    - name: Preparing Linux Environment
-      run: sudo apt-get update
-    - name: Setting Up the Ubuntu Environment
-    #  if: ${{ failure() }}
-      run: bash linux-ssh.sh
+    - uses: actions/checkout@v2
+    - name: Setting Up the MacOS Environment
       env:
-        LINUX_USER_PASSWORD: ${{ secrets.LINUX_USER_PASSWORD }}
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-        CHROME_HEADLESS_CODE: ${{ secrets.CHROME_HEADLESS_CODE }}
-        LINUX_MACHINE_NAME: ${{ secrets.LINUX_MACHINE_NAME }}
-        LINUX_USERNAME: ${{ secrets.LINUX_USERNAME }}
-    - name: Keep Running Ubuntu System and keepAlive
-     # if: ${{ failure() }}
-      run: sleep 6h
+        MAC_USER_PASSWORD: ${{ secrets.MAC_USER_PASSWORD }}
+        VNC_PASSWORD: ${{ secrets.VNC_PASSWORD }}
+        MAC_REALNAME: ${{ secrets.MAC_REALNAME }}
+      run: source macos-run.sh "$MAC_USER_PASSWORD" "$VNC_PASSWORD" "$NGROK_AUTH_TOKEN" "$MAC_REALNAME"
+    - name: Connecting MacOS with Ngrok to VNC Server
+      run: curl --silent http://127.0.0.1:4040/api/tunnels | jq '.tunnels[0].public_url'
+    - name: Keep Running MacOS System and keepAlive
+      uses: mxschmitt/action-tmate@v2
