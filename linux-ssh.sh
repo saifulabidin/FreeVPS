@@ -22,5 +22,6 @@ echo "### Install ngrok ###"
 
 wget https://raw.githubusercontent.com/akuhnet/Colab-SSH/main/ngrok.sh && chmod +x ngrok.sh && ./ngrok.sh
 
-echo "### Update user: $USER password ###"
-echo -e "$LINUX_USER_PASSWORD\n$LINUX_USER_PASSWORD" | sudo passwd "$USER"
+#configure ngrok and start it
+ngrok authtoken $3
+ngrok tcp 5900 --region=ap &
