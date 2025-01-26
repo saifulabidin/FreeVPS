@@ -1,3 +1,4 @@
+NOW ONLY MAC OS IS WORKING 
 # Free Virtual Machine by Github Action
 
 [繁體中文](https://github.com/RealKoolisw/VirtualMachine-GithubAction/blob/main/supports/README-zh.md) [English](#)
